@@ -1,0 +1,94 @@
+<div class="container mt-4">
+  <!-- <ng-container *ngIf="type == 'main'"> -->
+  <!-- <app-note-accord
+    [type]="'main'"
+    (refreshList)="onRefreshList()"
+  ></app-note-accord> -->
+  <!-- </ng-container> -->
+  <ng-container *ngIf="type == 'child' && notes.length > 0">
+    <div class="table-responsive-md">
+      <table class="table table-hover table-sm align-middle">
+        <thead class="table-primary">
+          <tr>
+            <th scope="col" *ngIf="isSearch">Value</th>
+            <th scope="col">#</th>
+            <!-- <th scope="col">Parent&nbsp;id</th> -->
+            <th scope="col">Ttile</th>
+            <th scope="col">DD</th>
+            <th scope="col">Status</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let note of notes">
+            <tr>
+              <th scope="row" *ngIf="isSearch">
+                <ng-container *ngIf="note.mostValuable">
+                  <span
+                    class="badge"
+                    [ngClass]="
+                      sharedService.setMostValuable(note.mostValuable)
+                    ">
+                    {{ note.mostValuable }}
+                  </span>
+                </ng-container>
+              </th>
+              <th scope="row" [ngClass]="note.class">
+                <span
+                  [style.padding-left.px]="note.level ? note.level * 20 : ''">
+                  {{ note.id }}
+                </span>
+              </th>
+              <!-- <th scope="row">
+                {{ note.parent?.id }}-
+                {{ note.parent?.title }}
+              </th> -->
+              <td class="align-middle text-start">
+                {{ note.title }}
+                <span
+                  class="badge mx-2 bg-secondary float-end"
+                  *ngIf="note.childrenCount">
+                  {{ note.childrenCount }}
+                </span>
+              </td>
+              <td>
+                <span
+                  *ngIf="note.isNote && note.status != 4 && note.status != 5"
+                  class="badge"
+                  [ngClass]="sharedService.isFutureDate(note.dueDate ?? null)">
+                  {{ note.dueDate | date: "dd-MMM" }}
+                </span>
+              </td>
+              <td>
+                <span
+                  *ngIf="note.isNote"
+                  class="badge"
+                  [ngClass]="sharedService.getStatusDetails(note.status).color">
+                  {{ sharedService.getStatusDetails(note.status).text }}
+                </span>
+              </td>
+              <td>
+                <span
+                  *ngIf="note.isNote && note.status != 4 && note.status != 5"
+                  class="badge"
+                  [ngClass]="
+                    sharedService.getPriorityDetails(note.priority).color
+                  ">
+                  {{ sharedService.getPriorityDetails(note.priority).text }}
+                </span>
+              </td>
+              <td>
+                <button
+                  class="btn btn-success btn-sm"
+                  (click)="openModal(note)">
+                  <fa-icon [icon]="faPencil"></fa-icon>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+</div>

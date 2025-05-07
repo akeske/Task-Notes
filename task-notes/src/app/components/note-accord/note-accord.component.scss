@@ -1,0 +1,47 @@
+.btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+.table-sm th,
+.table-sm td {
+  padding: 1px !important; /* Default Bootstrap is ~8px */
+}
+
+/* Reduce row spacing */
+.table-sm tbody tr {
+  margin: 0; /* Ensures no extra margin */
+  line-height: 1; /* Reduces row height */
+}
+
+.accordion {
+  background-color: #1e242c;
+  color: #f2f6f8;
+
+  .accordion-item {
+    background-color: #2a2f38;
+    border: 1px solid #3a404a;
+    color: #f2f6f8;
+  }
+
+  .accordion-header {
+    button {
+      background-color: #2a2f38;
+      color: #f2f6f8;
+      box-shadow: none;
+
+      &:hover {
+        background-color: #343b45;
+      }
+
+      &:not(.collapsed) {
+        background-color: #3a404a;
+        color: #ffffff;
+      }
+    }
+  }
+
+  .accordion-body {
+    background-color: #252a32;
+    color: #dce3ea;
+  }
+}

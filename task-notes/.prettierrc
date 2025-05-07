@@ -1,0 +1,6 @@
+{
+  "prettier.bracketSameLine": true,
+  "prettier.printWidth": 180,
+  "bracketSameLine": true,
+  "htmlWhitespaceSensitivity": "ignore"
+}

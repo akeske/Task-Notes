@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+      "module": "CommonJS",
+      "esModuleInterop": true,
+      "resolveJsonModule": true,
+      "target": "ES2020",
+      "moduleResolution": "node",
+      "sourceMap": true,
+      "outDir": "./dist",
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "lib": ["es5", "es6", "dom"],
+      "strict": false
+    },
+    "lib": ["es2015"]
+  }

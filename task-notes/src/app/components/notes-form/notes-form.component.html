@@ -1,0 +1,242 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    {{ editNote.id ? "Edit Note" : "Create Note" }}&nbsp;
+    <u>{{ editNote.title }}</u>
+  </h4>
+  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+  <div class="isNote form-check form-switch">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="isNote"
+      [(ngModel)]="editNote.isNote" />
+    <label class="form-check-label text-right" for="isNote">Is task?</label>
+  </div>
+  <button
+    type="button"
+    class="btn-close"
+    (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <ng-container *ngFor="let parentNote of parentNotes; let i = index">
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ parentNote.title }}
+          </li>
+        </ng-container>
+      </ol>
+    </nav>
+  </div>
+  <div class="row g-3">
+    <div class="col-md-3">
+      <label for="title" class="form-label">
+        Ttitle
+        <span class="text-danger">*</span>
+      </label>
+      <input
+        [(ngModel)]="editNote.title"
+        placeholder="Title"
+        type="text"
+        class="form-control"
+        id="title"
+        required
+        #titleRef="ngModel" />
+      <div *ngIf="titleRef.invalid && titleRef.touched" class="text-danger">
+        Title is required.
+      </div>
+    </div>
+    <div class="col-md-2" *ngIf="editNote.isNote">
+      <label for="status" class="form-label">Status</label>
+      <select
+        [(ngModel)]="editNote.status"
+        class="form-select mb-3"
+        id="status">
+        <option value="1">To Do</option>
+        <option value="2">In Progress</option>
+        <option value="3">On Hold</option>
+        <option value="4">Completed</option>
+        <option value="5">Canceled</option>
+      </select>
+    </div>
+
+    <div class="col-md-2" *ngIf="editNote.isNote">
+      <label for="priority" class="form-label">Priority</label>
+      <select
+        [(ngModel)]="editNote.priority"
+        class="form-select mb-3"
+        id="priority">
+        <option value="1">Low</option>
+        <option value="2">Medium</option>
+        <option value="3">High</option>
+        <option value="4">Urgent</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label for="parentId" class="form-label">Parent Note</label>
+      <ng-select
+        class="mb-3"
+        [items]="notes"
+        bindLabel="customTitle"
+        bindValue="id"
+        placeholder="Select parent"
+        [(ngModel)]="editNote.parentId"
+        id="parentId"></ng-select>
+    </div>
+    <div class="col-md-2" *ngIf="editNote.isNote">
+      <label for="dueDate" class="form-label">Due date</label>
+      <input
+        type="date"
+        [(ngModel)]="editNote.dueDate"
+        class="form-control"
+        id="dueDate" />
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-7">
+      <span for="content" class="form-label">
+        Content
+        <span class="text-danger">*</span>
+      </span>
+      <div class="content">
+        <ngx-editor-menu
+          [editor]="editor"
+          [toolbar]="toolbar"></ngx-editor-menu>
+        <ngx-editor
+          [editor]="editor"
+          [(ngModel)]="editNote.content"
+          [placeholder]="'Type here...'"></ngx-editor>
+      </div>
+      <!-- <textarea
+        required
+        [(ngModel)]="editNote.content"
+        placeholder="Content"
+        class="form-control"
+        id="content"
+        rows="7"
+        required
+        #contentRef="ngModel"></textarea>
+      <div *ngIf="contentRef.invalid && contentRef.touched" class="text-danger">
+        Content is required.
+      </div> -->
+    </div>
+
+    <!-- <div class="col-md-3">
+      <label for="urls" class="form-label">URLs</label>
+      <input
+        [(ngModel)]="editNote.metadata?.urls"
+        placeholder="URLs (comma-separated)"
+        id="urls"
+        class="form-control" />
+    </div> -->
+
+    <!-- <div class="col-md-3">
+      <label for="emailSubjects" class="form-label">Email</label>
+      <input
+        [(ngModel)]="editNote.metadata.emailSubjects"
+        placeholder="Email Subjects (comma-separated)"
+        id="emailSubjects"
+        class="form-control" />
+    </div> -->
+
+    <!-- <div class="col-md-3">
+      <label for="dates" class="form-label">Metadata</label>
+      <input
+        [(ngModel)]="editNote.metadata.dates"
+        placeholder="Dates (comma-separated)"
+        id="dates"
+        class="form-control" />
+    </div> -->
+
+    <!-- <div class="col-md-12">
+      <label for="urls" class="form-label">Comments</label>
+      <textarea
+        [(ngModel)]="editNote.comments"
+        placeholder="Comments (comma-separated)"
+        class="form-control"
+        id="comments"></textarea>
+    </div> -->
+
+    <div class="col-md-5">
+      <div class="row g-1">
+        <span class="form-label">
+          Key/Value information
+          <button (click)="addInfo()" class="btn btn-primary btn-sm float-end">
+            <fa-icon [icon]="faPlus"></fa-icon>
+          </button>
+        </span>
+        <ng-container
+          id="info"
+          *ngFor="let inf of editNote.info; let i = index">
+          <div class="col-md-3">
+            <input
+              [(ngModel)]="inf.key"
+              placeholder="Key"
+              class="form-control" />
+          </div>
+          <div class="col-md-8">
+            <input
+              [(ngModel)]="inf.value"
+              placeholder="Value"
+              class="form-control" />
+          </div>
+          <div class="col-md-1">
+            <button (click)="remoreInfo(i)" class="btn btn-danger float-end">
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <br />
+  <div class="modal-footer">
+    <button
+      *ngIf="editNote.id"
+      class="btn btn-danger"
+      (click)="deleteNote(confirmModal, editNote.id)">
+      <fa-icon [icon]="faTrash"></fa-icon>
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="activeModal.dismiss('Close click')">
+      Close
+    </button>
+    <button
+      type="button"
+      class="btn btn-success"
+      (click)="closeModal('Save')"
+      [disabled]="!editNote.title && !editNote.content">
+      <fa-icon [icon]="faFloppyDisk"></fa-icon>
+      Confirm {{ editNote.id ? "Update" : "Save" }} Note
+    </button>
+  </div>
+</div>
+
+<!-- Bootstrap Modal -->
+<ng-template #confirmModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Confirm Delete</h4>
+    <button type="button" class="close" (click)="modal.dismiss('cancel')">
+      &times;
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete this item?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-danger btn-sm" (click)="modal.close('yes')">
+      Approve
+    </button>
+    <button
+      class="btn btn-secondary text-white"
+      (click)="modal.dismiss('cancel')">
+      Decline
+    </button>
+  </div>
+</ng-template>

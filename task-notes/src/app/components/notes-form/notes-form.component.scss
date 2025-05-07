@@ -1,0 +1,58 @@
+.isNote {
+  margin: calc(-0.5 * var(--bs-modal-header-padding-y))
+    calc(-20 * var(--bs-modal-header-padding-x))
+    calc(-0.5 * var(--bs-modal-header-padding-y)) auto;
+}
+
+ngx-editor .NgxEditor__Content {
+  background-color: #1e242c;
+  color: #f2f6f8;
+}
+
+ngx-editor-menu .NgxEditor__MenuBar {
+  background-color: #2a2f38;
+  border-bottom: 1px solid #3a404a;
+}
+
+ngx-editor-menu {
+  background-color: #2a2f38;
+  border-bottom: 1px solid #3a404a;
+  display: flex;
+}
+
+ngx-editor-menu button {
+  background-color: transparent;
+  color: #f2f6f8;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+ngx-color-picker .NgxEditor__Popup {
+  background-color: #343b45;
+  color: #ffffff;
+}
+
+ngx-image .NgxEditor__Popup {
+  background-color: #343b45;
+  color: #ffffff;
+}
+ngx-link .NgxEditor__Popup {
+  background-color: #343b45;
+  color: #ffffff;
+}
+
+ngx-dropdown {
+  background-color: #3a404a;
+  color: #ffffff;
+}
+
+.NgxEditor__MenuBar button:not(:disabled) {
+  background-color: #2a2f38;
+  color: #f2f6f8;
+}
+.NgxEditor__MenuBar button:not(:disabled):hover {
+  background-color: #3a404a;
+  color: #f2f6f8;
+}

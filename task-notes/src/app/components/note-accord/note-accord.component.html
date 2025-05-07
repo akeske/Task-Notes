@@ -1,0 +1,173 @@
+<div
+  ngbAccordion
+  #accordion="ngbAccordion"
+  class="custom-accordion"
+  [closeOthers]="true">
+  <ng-container *ngFor="let note of notes">
+    <div ngbAccordionItem>
+      <div ngbAccordionHeader>
+        <div class="p-1">
+          <!-- <span> {{ note.id }} </span> -->
+          <span class="d-inline m-1">
+            <span class="d-inline m-2">
+              <fa-icon
+                [icon]="faTrash"
+                style="color: #f17a77"
+                (click)="deleteNote(confirmModal, note.id)"></fa-icon>
+            </span>
+            <span>{{ note.title }}</span>
+            <span
+              *ngIf="note.isNote"
+              class="badge"
+              [ngClass]="sharedService.isFutureDate(note.dueDate ?? null)">
+              {{ note.dueDate | date: "dd-MMM" }}
+            </span>
+            <span
+              *ngIf="note.isNote"
+              class="badge"
+              [ngClass]="sharedService.getStatusDetails(note.status).color">
+              {{ sharedService.getStatusDetails(note.status).text }}
+            </span>
+            <span
+              *ngIf="note.isNote"
+              class="badge"
+              [ngClass]="sharedService.getPriorityDetails(note.priority).color">
+              {{ sharedService.getPriorityDetails(note.priority).text }}
+            </span>
+          </span>
+          <span
+            class="d-inline float-end m-1"
+            *ngIf="note.children && note.children.length > 0">
+            <fa-icon
+              [icon]="faExpand"
+              style="color: #0d6efd"
+              ngbAccordionToggle></fa-icon>
+          </span>
+          <span class="d-inline float-end m-1">
+            <fa-icon
+              [icon]="faPlus"
+              style="color: #0d6efd"
+              (click)="openModal(note, true, note.parentId)"></fa-icon>
+          </span>
+          <span class="d-inline float-end m-1">
+            <fa-icon
+              style="color: #5acba2"
+              (click)="openModal(note, false, note.parentId)"
+              [icon]="faPencil"></fa-icon>
+          </span>
+        </div>
+      </div>
+
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody class="p-2">
+          <ng-template>
+            <div class="row">
+              <div class="col">
+                <div
+                  class="btn-group d-flex justify-content-end"
+                  role="group"></div>
+              </div>
+            </div>
+            <div class="row m-1">
+              <div class="col">
+                <app-note-accord
+                  [childrenNotes]="note.children"
+                  [parentId]="note.id"
+                  [type]="'children'"
+                  (refreshList)="onRefreshList($event)"></app-note-accord>
+              </div>
+            </div>
+            <!-- <div class="container mt-4">
+              <div class="col">
+              
+              <div *ngIf="note.children && note.children.length > 0">
+                <br />
+                <div class="table-responsive-md">
+                <table class="table table-hover table-sm align-middle">
+                  <thead class="table-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Ttile</th>
+                    <th scope="col">Due date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Edit</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <ng-container *ngFor="let not of note.children">
+                    <tr>
+                    <th scope="row">{{ not.id }}</th>
+                    <td class="align-middle text-start">
+                      {{ not.title }}
+                    </td>
+                    <td>
+                      <span
+                      class="badge"
+                      [ngClass]="isFutureDate(not.dueDate)"
+                      >{{ not.dueDate | date: "dd-MMM" }}</span
+                      >
+                    </td>
+                    <td>
+                      <span
+                      class="badge"
+                      [ngClass]="getStatusDetails(note.status).color"
+                      >{{ getStatusDetails(note.status).text }}</span
+                      >
+                    </td>
+                    <td>
+                      <span
+                      class="badge"
+                      [ngClass]="
+                        getPriorityDetails(note.priority).color
+                      "
+                      >{{
+                        getPriorityDetails(note.priority).text
+                      }}</span
+                      >
+                    </td>
+                    <td>
+                      <button
+                      class="btn btn-outline-success btn-sm"
+                      (click)="openModal(not)"
+                      >
+                      <fa-icon [icon]="faPencil"></fa-icon>
+                      </button>
+                    </td>
+                    </tr>
+                  </ng-container>
+                  </tbody>
+                </table>
+                </div>
+              </div>
+              </div>
+            </div> -->
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<!-- Bootstrap Modal -->
+<ng-template #confirmModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Confirm Delete</h4>
+    <button type="button" class="close" (click)="modal.dismiss('cancel')">
+      &times;
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete this item?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-danger text-white" (click)="modal.close('yes')">
+      Approve
+    </button>
+    <button
+      class="btn btn-secondary text-white"
+      (click)="modal.dismiss('cancel')">
+      Decline
+    </button>
+  </div>
+</ng-template>

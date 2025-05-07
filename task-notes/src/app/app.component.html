@@ -1,0 +1,58 @@
+<div class="container">
+  <h2>
+    Task Notes Manager '
+    <small>v. {{ version }}'</small>
+  </h2>
+
+  <div class="row">
+    <div class="col-5">
+      <button
+        class="btn btn-primary text-white float-right btn-sm float-end"
+        (click)="openModal()">
+        <span>Create</span>
+      </button>
+      <br />
+      <br />
+      <app-note-accord
+        [type]="'main'"
+        (refreshList)="onRefreshList()"
+        #mainAccord></app-note-accord>
+      <!-- <app-notes-list
+            [type]="'main'"
+            (selectNote)="onParentSelect($event)"
+            (refreshList)="onRefreshList()"
+            #allNotesList
+          ></app-notes-list> -->
+    </div>
+    <div class="col-7">
+      <button
+        class="btn btn-secondary text-white btn-sm float-start"
+        (click)="changeNotifications()">
+        {{ notificationStatus ? "You have Notifications" : "No Notifications" }}
+      </button>
+      <button
+        class="btn btn-primary text-white btn-sm float-end"
+        (click)="resetList()">
+        Reset
+      </button>
+      <input
+        [(ngModel)]="search"
+        placeholder="Search"
+        type="text"
+        class="form-control"
+        id="serch"
+        (keyup.enter)="searchChatGPT()" />
+      <br *ngIf="chatGPTResponse" />
+      <div
+        *ngIf="chatGPTResponse"
+        class="container p-4 bg-dark rounded shadow-lg mx-auto comfort-read text-start"
+        [innerHTML]="chatGPTResponse"></div>
+
+      <app-notes-list
+        [type]="'child'"
+        [parentId]="selectedParentId"
+        (refreshList)="onRefreshList()"
+        #childNotesList></app-notes-list>
+    </div>
+  </div>
+</div>
