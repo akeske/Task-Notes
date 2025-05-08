@@ -22,6 +22,8 @@ export class AppComponent implements OnInit {
   @ViewChild('childNotesList') childNotesList!: NotesListComponent;
   @ViewChild(NoteAccordComponent) mainAccord?: NoteAccordComponent;
 
+  apiKey = 'sk-proj-';
+
   search: string | undefined;
   selectedParentId: number | null = null;
   selectedNote: Note | undefined;
@@ -92,10 +94,8 @@ export class AppComponent implements OnInit {
   }
 
   async sendNotesToChatGPT(search: string): Promise<any> {
-    const apiKey =
-      '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';
     const openai = new OpenAI({
-      apiKey: apiKey,
+      apiKey: this.apiKey,
       dangerouslyAllowBrowser: true,
     });
 
@@ -155,9 +155,8 @@ export class AppComponent implements OnInit {
   }
 
   async askChatGPT(search: string) {
-    const apiKey = '';
     const openai = new OpenAI({
-      apiKey: apiKey,
+      apiKey: this.apiKey,
       dangerouslyAllowBrowser: true,
     });
 
